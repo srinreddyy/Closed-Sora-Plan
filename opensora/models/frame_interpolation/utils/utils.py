@@ -126,7 +126,7 @@ def readPFM(file):
     scale = None
     endian = None
 
-    header = file.readline().rstrip()
+    header = file.readline(5_000_000).rstrip()
     if header.decode("ascii") == 'PF':
         color = True
     elif header.decode("ascii") == 'Pf':
@@ -134,13 +134,13 @@ def readPFM(file):
     else:
         raise Exception('Not a PFM file.')
 
-    dim_match = re.match(r'^(\d+)\s(\d+)\s$', file.readline().decode("ascii"))
+    dim_match = re.match(r'^(\d+)\s(\d+)\s$', file.readline(5_000_000).decode("ascii"))
     if dim_match:
         width, height = list(map(int, dim_match.groups()))
     else:
         raise Exception('Malformed PFM header.')
 
-    scale = float(file.readline().decode("ascii").rstrip())
+    scale = float(file.readline(5_000_000).decode("ascii").rstrip())
     if scale < 0:
         endian = '<'
         scale = -scale
@@ -230,15 +230,15 @@ def writeFlow(name, flow):
 def readFloat(name):
     f = open(name, 'rb')
 
-    if(f.readline().decode("utf-8"))  != 'float\n':
+    if(f.readline(5_000_000).decode("utf-8"))  != 'float\n':
         raise Exception('float file %s did not contain <float> keyword' % name)
 
-    dim = int(f.readline())
+    dim = int(f.readline(5_000_000))
 
     dims = []
     count = 1
     for i in range(0, dim):
-        d = int(f.readline())
+        d = int(f.readline(5_000_000))
         dims.append(d)
         count *= d
 
