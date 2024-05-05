@@ -1,5 +1,5 @@
 import json
-import os, io, csv, math, random
+import os, io, csv, math
 import numpy as np
 import torchvision
 from einops import rearrange
@@ -12,6 +12,7 @@ from tqdm import tqdm
 
 from opensora.utils.dataset_utils import DecordInit
 from opensora.utils.utils import text_preprocessing
+import secrets
 
 
 
@@ -79,7 +80,7 @@ class T2V_dataset(Dataset):
             return video, input_ids, cond_mask
         except Exception as e:
             print(f'Error with {e}, {self.samples[idx]}')
-            return self.__getitem__(random.randint(0, self.__len__() - 1))
+            return self.__getitem__(secrets.SystemRandom().randint(0, self.__len__() - 1))
 
     def tv_read(self, path):
         vframes, aframes, info = torchvision.io.read_video(filename=path, pts_unit='sec', output_format='TCHW')

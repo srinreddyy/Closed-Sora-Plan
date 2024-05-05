@@ -1,11 +1,12 @@
 import re
 import sys
 import torch
-import random
 import numpy as np
 from PIL import ImageFile
 import torch.nn.functional as F
 from imageio import imread, imwrite
+import secrets
+
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
@@ -89,7 +90,7 @@ def tensor2img(img_t):
                         ).clip(0, 255).astype(np.uint8)
 
 def seed_all(seed):
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)

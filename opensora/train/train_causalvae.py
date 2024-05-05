@@ -1,8 +1,8 @@
 import sys
+import secrets
 
 sys.path.append(".")
 import torch
-import random
 import numpy as np
 from opensora.models.ae.videobase import (
     CausalVAEModel,
@@ -87,7 +87,7 @@ class TrainingArguments:
 def set_seed(seed=1006):
     torch.manual_seed(seed)
     np.random.seed(seed)
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
 
 
 def load_callbacks_and_logger(args):

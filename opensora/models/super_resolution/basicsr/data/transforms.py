@@ -1,6 +1,6 @@
 import cv2
-import random
 import torch
+import secrets
 
 
 def mod_crop(img, scale):
@@ -69,8 +69,8 @@ def paired_random_crop(img_gts, img_lqs, gt_patch_size, scale, gt_path=None):
                          f'Please remove {gt_path}.')
 
     # randomly choose top and left coordinates for lq patch
-    top = random.randint(0, h_lq - lq_patch_size)
-    left = random.randint(0, w_lq - lq_patch_size)
+    top = secrets.SystemRandom().randint(0, h_lq - lq_patch_size)
+    left = secrets.SystemRandom().randint(0, w_lq - lq_patch_size)
 
     # crop lq patch
     if input_type == 'Tensor':
@@ -113,9 +113,9 @@ def augment(imgs, hflip=True, rotation=True, flows=None, return_status=False):
             results only have one element, just return ndarray.
 
     """
-    hflip = hflip and random.random() < 0.5
-    vflip = rotation and random.random() < 0.5
-    rot90 = rotation and random.random() < 0.5
+    hflip = hflip and secrets.SystemRandom().random() < 0.5
+    vflip = rotation and secrets.SystemRandom().random() < 0.5
+    rot90 = rotation and secrets.SystemRandom().random() < 0.5
 
     def _augment(img):
         if hflip:  # horizontal

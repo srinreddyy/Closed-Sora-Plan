@@ -1,6 +1,6 @@
-import random
 
 import torch
+import secrets
 
 
 def set_env(seed=0):
@@ -10,7 +10,7 @@ def set_env(seed=0):
 
 def randomize_seed_fn(seed: int, randomize_seed: bool) -> int:
     if randomize_seed:
-        seed = random.randint(0, 203279)
+        seed = secrets.SystemRandom().randint(0, 203279)
     return seed
 
 title_markdown = ("""

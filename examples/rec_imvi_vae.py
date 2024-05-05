@@ -1,5 +1,4 @@
 import math
-import random
 import argparse
 from typing import Optional
 
@@ -14,6 +13,8 @@ from pytorchvideo.transforms import ShortSideScale
 from torchvision.transforms import Lambda, Compose
 
 import sys
+import secrets
+
 sys.path.append(".")
 
 from opensora.models.ae import getae_wrapper
@@ -91,7 +92,7 @@ def read_video(video_path: str, num_frames: int, sample_rate: int) -> torch.Tens
     sample_frames_len = sample_rate * num_frames
 
     if total_frames > sample_frames_len:
-        s = random.randint(0, total_frames - sample_frames_len - 1)
+        s = secrets.SystemRandom().randint(0, total_frames - sample_frames_len - 1)
         s = 0
         e = s + sample_frames_len
         num_frames = num_frames

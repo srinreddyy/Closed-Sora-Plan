@@ -1,7 +1,6 @@
 import json
 import os
 import torch
-import random
 import torch.utils.data as data
 
 import numpy as np
@@ -12,6 +11,7 @@ from tqdm import tqdm
 
 from opensora.dataset.transform import center_crop, RandomCropVideo
 from opensora.utils.dataset_utils import DecordInit
+import secrets
 
 
 class T2V_Feature_dataset(Dataset):
@@ -70,7 +70,7 @@ class T2V_Feature_dataset(Dataset):
         # try:
         sample = self.samples[idx]
         ae, t5 = sample['ae'], sample['t5']
-        t5 = random.choice(t5)
+        t5 = secrets.choice(t5)
         video_origin = np.load(ae)[0]  # C T H W
         _, total_frames, _, _ = video_origin.shape
         # Sampling video frames
@@ -169,7 +169,7 @@ class T2V_T5_Feature_dataset(Dataset):
         try:
             sample = self.samples[idx]
             ae, t5 = sample['ae'], sample['t5']
-            t5 = random.choice(t5)
+            t5 = secrets.choice(t5)
 
             video = self.decord_read(ae)
             video = self.transform(video)  # T C H W -> T C H W
@@ -195,7 +195,7 @@ class T2V_T5_Feature_dataset(Dataset):
             return video, cond, cond_mask
         except Exception as e:
             print(f'Error with {e}, {sample}')
-            return self.__getitem__(random.randint(0, self.__len__() - 1))
+            return self.__getitem__(secrets.SystemRandom().randint(0, self.__len__() - 1))
 
     def decord_read(self, path):
         decord_vr = self.v_decoder(path)
