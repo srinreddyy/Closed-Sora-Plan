@@ -1,5 +1,4 @@
 import argparse
-import random
 import torch
 import yaml
 from collections import OrderedDict
@@ -7,6 +6,7 @@ from os import path as osp
 
 from basicsr.utils import set_random_seed
 from basicsr.utils.dist_util import get_dist_info, init_dist, master_only
+import secrets
 
 
 def ordered_yaml():
@@ -115,7 +115,7 @@ def parse_options(root_path, SR, is_train=True):
     # random seed
     seed = opt.get('manual_seed')
     if seed is None:
-        seed = random.randint(1, 10000)
+        seed = secrets.SystemRandom().randint(1, 10000)
         opt['manual_seed'] = seed
     set_random_seed(seed + opt['rank'])
 

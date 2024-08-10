@@ -1,5 +1,4 @@
 import os.path as osp
-import random
 from glob import glob
 
 from torchvision import transforms
@@ -11,6 +10,7 @@ from torchvision.transforms import Lambda
 
 from ....dataset.transform import ToTensorVideo, CenterCropVideo
 from ....utils.dataset_utils import DecordInit
+import secrets
 
 def TemporalRandomCrop(total_frames, size):
     """
@@ -28,7 +28,7 @@ def TemporalRandomCrop(total_frames, size):
                   and the second integer is the ending frame index (inclusive) of the cropped sequence.
     """
     rand_end = max(0, total_frames - size - 1)
-    begin_index = random.randint(0, rand_end)
+    begin_index = secrets.SystemRandom().randint(0, rand_end)
     end_index = min(begin_index + size, total_frames)
     return begin_index, end_index
 
@@ -86,14 +86,14 @@ class VideoDataset(data.Dataset):
             return dict(video=video, label="")
         except Exception as e:
             print(f'Error with {e}, {video_path}')
-            return self.__getitem__(random.randint(0, self.__len__()-1))
+            return self.__getitem__(secrets.SystemRandom().randint(0, self.__len__()-1))
 
     def decord_read(self, path):
         decord_vr = self.v_decoder(path)
         total_frames = len(decord_vr)
         # Sampling video frames
         if self.dynamic_sample:
-            sample_rate = random.randint(1, self.sample_rate)
+            sample_rate = secrets.SystemRandom().randint(1, self.sample_rate)
         else:
             sample_rate = self.sample_rate
         size = self.sequence_length * sample_rate
