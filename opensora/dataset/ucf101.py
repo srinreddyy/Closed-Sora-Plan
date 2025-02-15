@@ -11,9 +11,9 @@ from torchvision.transforms import Compose, Lambda, ToTensor
 from torchvision.transforms._transforms_video import NormalizeVideo, RandomCropVideo, RandomHorizontalFlipVideo
 from pytorchvideo.transforms import ApplyTransformToKey, ShortSideScale, UniformTemporalSubsample
 from torch.nn import functional as F
-import random
 
 from opensora.utils.dataset_utils import DecordInit
+import secrets
 
 
 class UCF101(Dataset):
@@ -51,7 +51,7 @@ class UCF101(Dataset):
             return video, label
         except Exception as e:
             print(f'Error with {e}, {video_path}')
-            return self.__getitem__(random.randint(0, self.__len__()-1))
+            return self.__getitem__(secrets.SystemRandom().randint(0, self.__len__()-1))
 
     def tv_read(self, path):
         vframes, aframes, info = torchvision.io.read_video(filename=path, pts_unit='sec', output_format='TCHW')
