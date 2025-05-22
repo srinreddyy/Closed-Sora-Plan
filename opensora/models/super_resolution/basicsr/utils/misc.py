@@ -1,16 +1,16 @@
 import numpy as np
 import os
-import random
 import time
 import torch
 from os import path as osp
 
 from .dist_util import master_only
+import secrets
 
 
 def set_random_seed(seed):
     """Set random seeds."""
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed(seed)
